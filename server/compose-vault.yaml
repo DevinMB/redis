@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   vault:
-    image: vault:1.10.0
+    image: hashicorp/vault:latest
     container_name: vault
     ports:
       - "8200:8200"

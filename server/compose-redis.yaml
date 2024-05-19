@@ -8,13 +8,23 @@ services:
       - "6379:6379"
     environment:
       - VAULT_ADDR=http://192.168.1.250:8200
-      - ROLE_ID=your_role_id  # Replace with actual Role ID
-      - SECRET_ID=your_secret_id  # Replace with actual Secret ID
+      - ROLE_ID=512f3244-547a-5400-d0f1-bb31e51a7f83
+      - SECRET_ID=d8da0ea9-d343-8fd3-1ada-55b5c998bd9e
     volumes:
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
-      - ./entrypoint.sh:/entrypoint.sh
-    entrypoint: ["/entrypoint.sh"]
-    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+      - configs:/configs
+      - redis_data:/data
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      "apt-get update && apt-get install -y curl jq && 
+      mkdir -p /usr/local/etc/redis && 
+      cp /configs/redis/redis.conf /usr/local/etc/redis/redis.conf && 
+      chmod +x /configs/redis/entrypoint.sh && 
+      /configs/redis/entrypoint.sh && 
+      redis-server /usr/local/etc/redis/redis.conf"
 
 volumes:
   redis_data:
+  configs:
+    external: true
+    name: configs
+

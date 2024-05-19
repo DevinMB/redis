@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Ensure required utilities are installed
-apk add --no-cache curl jq
-
 # Vault settings
 VAULT_ADDR=${VAULT_ADDR}
 ROLE_ID=${ROLE_ID}

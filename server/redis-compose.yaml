@@ -14,8 +14,8 @@ services:
       - source: users_acl
         target: /usr/local/etc/redis/users.acl
     environment:
-      - REDIS_PASSWORD=your_secure_password
-      - REDIS_DMB_STREAMS_PASSWORD=your_dmb_streams_password
+      - REDIS_PASSWORD=general_password
+      - REDIS_DMB_STREAMS_PASSWORD=dmb_streams_password
     command: ["sh", "-c", "redis-server /usr/local/etc/redis/redis.conf"]
     restart: always
 

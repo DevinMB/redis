@@ -1,0 +1,2 @@
+user default on nopass ~* +@all
+user dmb-streams on >${REDIS_DMB_STREAMS_PASSWORD} ~* +@stream

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    configs:
+      - source: redis_conf
+        target: /usr/local/etc/redis/redis.conf
+      - source: users_acl
+        target: /usr/local/etc/redis/users.acl
+    environment:
+      - REDIS_PASSWORD=your_secure_password  # General Redis password
+      - REDIS_DMB_STREAMS_PASSWORD=your_dmb_streams_password  # Password for dmb-streams user
+    command: ["sh", "-c", "redis-server /usr/local/etc/redis/redis.conf"]
+    restart: always
+
+volumes:
+  redis_data:
+
+configs:
+  redis_conf:
+    external: true
+  users_acl:
+    external: true

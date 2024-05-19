@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  vault:
+    image: vault:1.10.0
+    container_name: vault
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_LOCAL_CONFIG: |
+        {
+          "backend": {
+            "file": {
+              "path": "/vault/file"
+            }
+          },
+          "listener": {
+            "tcp": {
+              "address": "0.0.0.0:8200",
+              "tls_disable": 1
+            }
+          },
+          "default_lease_ttl": "168h",
+          "max_lease_ttl": "720h",
+          "ui": true
+        }
+    volumes:
+      - ./vault/data:/vault/file
+    command: ["server"]
+
+volumes:
+  vault_data:

@@ -6,24 +6,15 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-    volumes:
-      - redis_data:/data
-    configs:
-      - source: redis_conf
-        target: /usr/local/etc/redis/redis.conf
-      - source: users_acl
-        target: /usr/local/etc/redis/users.acl
     environment:
-      - REDIS_PASSWORD=general_password
-      - REDIS_DMB_STREAMS_PASSWORD=dmb_streams_password
-    command: ["sh", "-c", "redis-server /usr/local/etc/redis/redis.conf"]
-    restart: always
+      - VAULT_ADDR=http://192.168.1.250:8200
+      - ROLE_ID=your_role_id  # Replace with actual Role ID
+      - SECRET_ID=your_secret_id  # Replace with actual Secret ID
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/entrypoint.sh"]
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
 
 volumes:
   redis_data:
-
-configs:
-  redis_conf:
-    external: true
-  users_acl:
-    external: true
